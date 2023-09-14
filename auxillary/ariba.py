@@ -32,13 +32,15 @@ def __buildAribaDb(params:Parameters) -> None:
     # constant
     CMD = ("prepareref", "--all_coding", "no", "-f")
     
-    # build the command
-    cmd = [params._aribaExe]
-    cmd.extend(CMD)
-    cmd.extend([params._espwFna, params._aribaDb])
+    # do not rebuild the database if it already exists
+    if not os.path.exists(params._aribaDb):
+        # build the command
+        cmd = [params._aribaExe]
+        cmd.extend(CMD)
+        cmd.extend([params._espwFna, params._aribaDb])
 
-    # run the command
-    subprocess.run(cmd, check=True, capture_output=True)
+        # run the command
+        subprocess.run(cmd, check=True, capture_output=True)
 
 
 def __runAriba(params:Parameters) -> str:
