@@ -1,5 +1,6 @@
 # Joseph S. Wirth
 # September 2023
+
 from auxillary.Parameters import Parameters
 from auxillary.BlastHit import BlastHit
 import os, subprocess
@@ -15,8 +16,8 @@ def _blastn(params:Parameters) -> str:
         str: the espW allele detected
     """
     __makeBlastDb(params)
-    blastFn = __runBlast(params)
-    allele = __parseBlastTable(blastFn)
+    __runBlast(params)
+    allele = __parseBlastTable(params._blastFn)
     return allele
 
 
@@ -32,12 +33,12 @@ def __makeBlastDb(params:Parameters) -> None:
     DB_DIR = os.path.join(os.path.abspath(os.curdir), "blastdb")
     
     # get the blast db name
-    params._blastdb = os.path.join(DB_DIR, os.path.splitext(os.path.basename(params.fna))[0])
+    params._blastDb = os.path.join(DB_DIR, os.path.splitext(os.path.basename(params.fna))[0])
     
     # build the command
     cmd = [os.path.join(params._blastExeDir, CMD_A)]
     cmd.extend(CMD_B)
-    cmd.extend([params._blastdb, "-in", params.fna])
+    cmd.extend([params._blastDb, "-in", params.fna])
     
     # make the blastdb
     subprocess.run(cmd, check=True, capture_output=True)
@@ -62,7 +63,7 @@ def __runBlast(params:Parameters) -> None:
     cmd = [os.path.join(params._blastExeDir, BLASTN)]
     cmd.extend(CMD)
     cmd.extend(["-query", params._espwFna])
-    cmd.extend(['-db', params._blastdb])
+    cmd.extend(['-db', params._blastDb])
     cmd.extend(['-num_threads', str(params.threads)])
     cmd.extend(['-out', params._blastFn])
     
