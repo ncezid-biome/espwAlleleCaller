@@ -37,4 +37,4 @@ def __main() -> None:
 
 
 if __name__ == "__main__":
-    allele = __main()
+    __main()
