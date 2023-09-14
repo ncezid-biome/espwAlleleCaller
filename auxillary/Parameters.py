@@ -43,7 +43,7 @@ class Parameters():
         self._espwFna:str = os.path.join(ALLELE_CALLER_DIR, Parameters.__ESPW_FNA)
         
         # initialize a few other variables
-        self._blastdb:str = None
+        self._blastDb:str = None
         self._blastFn:str = None
         self._aribaDir:str = None
 
