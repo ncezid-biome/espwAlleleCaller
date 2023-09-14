@@ -6,13 +6,11 @@ from auxillary.blastn import _blastn
 from auxillary.ariba import _ariba
 import os
 
-def __main() -> str:
+def __main() -> None:
     """main runner function
          * searches for espW using blastn
          * if that fails, searches using ariba
-
-    Returns:
-        str: the allele of espW
+         * prints the allele to stdout
     """
     # constant
     ABSENT = "absent"
@@ -35,9 +33,8 @@ def __main() -> str:
             os.remove(params._blastFn)
             os.rmdir(params._aribaDir)
         
-        return allele
+        print(allele)
 
 
 if __name__ == "__main__":
     allele = __main()
-    print(allele)
