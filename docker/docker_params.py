@@ -5,7 +5,7 @@
 BLAST_EXE_DIR = '/usr/bin/'
 
 # specify the path to the ariba executable
-ARIBA_EXE = '/usr/bin/ariba'
+ARIBA_EXE = '/usr/local/bin/ariba'
 
 # specify the path to the espwAlleleCaller directory
 ALLELE_CALLER_DIR = '/espwAlleleCaller'

@@ -6,24 +6,28 @@
 # start with ubuntu base
 FROM ubuntu:22.04
 
-# install python3 and blast
+# install python3, blast, git, bowtie2, mummer, and cd-hit
 RUN apt-get update
 RUN apt-get -y install python3.11 python3-pip python3-setuptools python3-dev
 RUN apt-get -y install ncbi-blast+
+RUN apt-get -y install git
+RUN apt-get -y install mummer
+RUN apt-get -y install bowtie2
+RUN apt-get -y install cd-hit
 
 # install ariba and bio python
-RUN pip3 install ariba
 RUN pip3 install Bio
+RUN pip3 install ariba
 
 # clone repository
 RUN git clone https://github.com/ncezid-biome/espwAlleleCaller.git
 
 # modify the executable so that it can be invoked directly from the command line
 WORKDIR /espwAlleleCaller
-RUN cat "#!/usr/bin/python3" > espwAlleleCaller
-RUN cat "" >> espwAlleleCaller
+RUN echo "#!/usr/bin/python3" > espwAlleleCaller
+RUN echo "" >> espwAlleleCaller
 RUN cat espwAlleleCaller.py >> espwAlleleCaller
-RUN chmod +x /espwAlleleCaller
+RUN chmod +x espwAlleleCaller
 ENV PATH="${PATH}:/espwAlleleCaller"
 
 # copy param file
