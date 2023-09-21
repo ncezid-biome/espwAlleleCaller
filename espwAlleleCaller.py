@@ -42,6 +42,7 @@ def __main() -> None:
     """
     # constant
     ABSENT = "absent"
+    SEP = "\t"
     
     # parse command line arguments
     params = Parameters.parseArgs()
@@ -49,7 +50,7 @@ def __main() -> None:
     # only do work if help wasn't requested
     if not params.helpRequested:
         # attempt to determine the allele using blastn
-        allele = _blastn(params)
+        allele,contig = _blastn(params)
     
         # if an allele wasn't found, attempt to determine with ariba
         if allele == ABSENT:
@@ -59,7 +60,11 @@ def __main() -> None:
         if params.cleanup:
             __cleanup(params)
         
-        print(allele)
+        # print the allele; print the contig if blastn worked
+        if contig is not None:
+            print(allele + SEP + contig)
+        else:
+            print(allele)
 
 
 if __name__ == "__main__":

@@ -71,18 +71,15 @@ def __runBlast(params:Parameters) -> None:
     subprocess.run(cmd, check=True, capture_output=True)
 
 
-def __parseBlastTable(fn:str) -> str:
+def __parseBlastTable(fn:str) -> tuple[str,str]:
     """parses a blastn table and determines which espW allele is present
 
     Args:
         fn (str): a blastn table
 
     Returns:
-        str: the espW allele detected
+        tuple[str,str]: the espW allele detected and the contig where it was found
     """
-    # constant
-    NULL = 0
-
     # initialize a list of hits
     allHitsL:list[BlastHit] = list()
     
@@ -94,9 +91,12 @@ def __parseBlastTable(fn:str) -> str:
     # no hits means espW is absent
     if allHitsL == []:
         allele = 'absent'
+        contig = None
     
     # otherwise, choose the best hit's allele
     else:
-        allele = max(allHitsL).query
+        bestHit = max(allHitsL)
+        allele = bestHit.query
+        contig = bestHit.subject
     
-    return allele
+    return allele, contig
