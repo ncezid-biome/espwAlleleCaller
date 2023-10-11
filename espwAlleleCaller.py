@@ -1,6 +1,9 @@
 # Joseph S. Wirth
 # September 2023
 
+__author__ = "Joseph S. Wirth"
+__version__ = "1.0.0"
+
 from auxillary.Parameters import Parameters
 from auxillary.blastn import _blastn
 from auxillary.ariba import _ariba
