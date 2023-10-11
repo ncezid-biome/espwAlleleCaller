@@ -7,8 +7,8 @@
 FROM ubuntu:22.04
 
 # install python3, blast, git, bowtie2, mummer, and cd-hit
-RUN apt-get update
-RUN apt-get -y install python3.11 python3-pip python3-setuptools python3-dev
+RUN apt-get update && \
+    apt-get -y install python3.11 python3-pip python3-setuptools python3-dev
 RUN apt-get -y install ncbi-blast+
 RUN apt-get -y install git
 RUN apt-get -y install mummer
