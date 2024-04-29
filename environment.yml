@@ -1,0 +1,16 @@
+# Joseph S. Wirth, 2024
+## provides a conda environment for running espwAlleleCaller
+## commands:
+##        $ conda env create -f environment.yml
+##        $ conda activate espwallelecaller
+
+name: espwallelecaller
+channels:
+  - bioconda
+  - defaults
+  - conda-forge
+dependencies:
+  - python>=3.9
+  - biopython=1.81
+  - ariba>=2.12
+  - blast>=2.15
