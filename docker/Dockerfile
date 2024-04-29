@@ -6,11 +6,11 @@
 # start with ubuntu base
 FROM ubuntu:22.04
 
-# install python3, blast, git, bowtie2, mummer, and cd-hit
-RUN apt-get update
-RUN apt-get -y install python3.11 python3-pip python3-setuptools python3-dev
+# install python3, blast, wget, bowtie2, mummer, and cd-hit
+RUN apt-get update && \
+    apt-get -y install python3.11 python3-pip python3-setuptools python3-dev
 RUN apt-get -y install ncbi-blast+
-RUN apt-get -y install git
+RUN apt-get -y install wget
 RUN apt-get -y install mummer
 RUN apt-get -y install bowtie2
 RUN apt-get -y install cd-hit
@@ -20,7 +20,10 @@ RUN pip3 install Bio
 RUN pip3 install ariba
 
 # clone repository
-RUN git clone https://github.com/ncezid-biome/espwAlleleCaller.git
+RUN wget https://github.com/ncezid-biome/espwAlleleCaller/archive/refs/tags/v1.0.0.tar.gz
+RUN tar xzf v1.0.0.tar.gz
+RUN rm v1.0.0.tar.gz
+RUN mv /espwAlleleCaller-1.0.0 /espwAlleleCaller
 
 # modify the executable so that it can be invoked directly from the command line
 WORKDIR /espwAlleleCaller
