@@ -128,10 +128,10 @@ class BlastHit():
         # import data into a BlastHit object
         return BlastHit(row[QID],
                         row[SID],
-                        row[LEN],
-                        row[QCH],
-                        row[PID],
-                        row[QST],
-                        row[QED],
-                        row[SST],
-                        row[SED])
+                        int(row[LEN]),
+                        float(row[QCH]),
+                        float(row[PID]),
+                        int(row[QST]),
+                        int(row[QED]),
+                        int(row[SST]),
+                        int(row[SED]))
