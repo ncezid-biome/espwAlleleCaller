@@ -30,12 +30,13 @@ def __buildAribaDb(params:Parameters) -> None:
         params (Parameters): a Parameters object
     """
     # constant
+    ARIBA = "ariba"
     CMD = ("prepareref", "--all_coding", "no", "-f")
     
     # do not rebuild the database if it already exists
     if not os.path.exists(params._aribaDb):
         # build the command
-        cmd = [params._aribaExe]
+        cmd = [ARIBA]
         cmd.extend(CMD)
         cmd.extend([params._espwFna, params._aribaDb])
 
@@ -53,6 +54,7 @@ def __runAriba(params:Parameters) -> str:
         str: the file to be processed
     """
     # constants
+    ARIBA = "ariba"
     CMD = ("run", "--threads")
     OUT_FN = "assembled_seqs.fa.gz"
     
@@ -60,7 +62,7 @@ def __runAriba(params:Parameters) -> str:
     params._aribaDir = os.path.join(os.curdir, os.path.splitext(os.path.basename(params.fna))[0])
   
     # build the command
-    cmd = [params._aribaExe]
+    cmd = [ARIBA]
     cmd.extend(CMD)
     cmd.extend([str(params.threads), params._aribaDb, params.reads[0], params.reads[1], params._aribaDir])
     

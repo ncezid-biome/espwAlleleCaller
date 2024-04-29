@@ -1,7 +1,6 @@
 # Joseph S. Wirth
 # September 2023
 from __future__ import annotations
-from auxillary.params import *
 from Bio import SeqIO
 import getopt, os, sys
 
@@ -9,8 +8,8 @@ class Parameters():
     """class for storing and accessing parameters
     """
     # global constants
-    __ESPW_FNA = os.path.join("data", "espW_alleles.fna")
-    __ARIBA_DB = os.path.join("data", "ariba_db")
+    __ESPW_FNA = "espW_alleles.fna"
+    __ARIBA_DB = "ariba_db"
     __DEFAULT_THREADS = 1
     __DEFAULT_CLEANUP = True
     __DEFAULT_HELP = False
@@ -30,17 +29,18 @@ class Parameters():
             Parameters: a Parameters object
         """
         # store inputs
-        self.fna:str = fna
-        self.reads:tuple[str] = (read1, read2)
+        self.fna:str = os.path.abspath(fna)
+        self.reads:tuple[str] = tuple(map(os.path.abspath, (read1, read2)))
         self.threads:int = threads
         self.cleanup:bool = cleanup
         self.helpRequested:bool = helpRequested
         
+        # determine the `data` directory
+        dataDir = os.path.join(os.path.dirname(__file__), "..", "data")
+        
         # import values from the params file
-        self._blastExeDir:str = BLAST_EXE_DIR
-        self._aribaExe:str = ARIBA_EXE
-        self._aribaDb:str = os.path.join(ALLELE_CALLER_DIR, Parameters.__ARIBA_DB)
-        self._espwFna:str = os.path.join(ALLELE_CALLER_DIR, Parameters.__ESPW_FNA)
+        self._aribaDb:str = os.path.join(dataDir, Parameters.__ARIBA_DB)
+        self._espwFna:str = os.path.join(dataDir, Parameters.__ESPW_FNA)
         
         # initialize a few other variables
         self._blastDb:str = None

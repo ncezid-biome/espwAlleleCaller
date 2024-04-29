@@ -36,7 +36,7 @@ def __makeBlastDb(params:Parameters) -> None:
     params._blastDb = os.path.join(DB_DIR, os.path.splitext(os.path.basename(params.fna))[0])
     
     # build the command
-    cmd = [os.path.join(params._blastExeDir, CMD_A)]
+    cmd = [CMD_A]
     cmd.extend(CMD_B)
     cmd.extend([params._blastDb, "-in", params.fna])
     
@@ -60,7 +60,7 @@ def __runBlast(params:Parameters) -> None:
     params._blastFn = os.path.join(os.curdir, os.path.splitext(os.path.basename(params.fna))[0] + FN_SUFFIX)
     
     # build the blastn command
-    cmd = [os.path.join(params._blastExeDir, BLASTN)]
+    cmd = [BLASTN]
     cmd.extend(CMD)
     cmd.extend(["-query", params._espwFna])
     cmd.extend(['-db', params._blastDb])
