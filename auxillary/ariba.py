@@ -54,16 +54,14 @@ def __runAriba(params:Parameters) -> str:
         str: the file to be processed
     """
     # constants
-    ARIBA = "ariba"
-    CMD = ("run", "--threads")
+    CMD = ("ariba", "run", "--threads")
     OUT_FN = "assembled_seqs.fa.gz"
     
     # determine the output directory
     params._aribaDir = os.path.join(os.curdir, os.path.splitext(os.path.basename(params.fna))[0])
   
     # build the command
-    cmd = [ARIBA]
-    cmd.extend(CMD)
+    cmd = list(CMD)
     cmd.extend([str(params.threads), params._aribaDb, params.reads[0], params.reads[1], params._aribaDir])
     
     # run the command
