@@ -39,7 +39,7 @@ class Parameters():
         dataDir = os.path.join(os.path.dirname(__file__), "..", "data")
         
         # import values from the params file
-        self._aribaDb:str = os.path.join(dataDir, Parameters.__ARIBA_DB)
+        self._aribaDb:str = os.path.join(os.curdir, Parameters.__ARIBA_DB)
         self._espwFna:str = os.path.join(dataDir, Parameters.__ESPW_FNA)
         
         # initialize a few other variables
