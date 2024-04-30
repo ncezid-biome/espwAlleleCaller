@@ -17,13 +17,12 @@ def _ariba(params:Parameters) -> str:
     Returns:
         str: the detected espW allele
     """
-    __buildAribaDb(params)
     aribaFn = __runAriba(params)
     allele = __processAriba(aribaFn)
     return allele
 
 
-def __buildAribaDb(params:Parameters) -> None:
+def _buildAribaDb(params:Parameters) -> None:
     """builds the ariba database using the values specified in a Parameters object
 
     Args:
@@ -58,7 +57,7 @@ def __runAriba(params:Parameters) -> str:
     OUT_FN = "assembled_seqs.fa.gz"
     
     # determine the output directory
-    params._aribaDir = os.path.join(os.curdir, os.path.splitext(os.path.basename(params.fna))[0])
+    params._aribaDir = os.path.join(os.curdir, os.path.splitext(os.path.basename(params.reads[0]))[0][:-2])
   
     # build the command
     cmd = list(CMD)

@@ -6,7 +6,7 @@ __version__ = "1.0.0"
 
 from auxillary.Parameters import Parameters
 from auxillary.blastn import _blastn
-from auxillary.ariba import _ariba
+from auxillary.ariba import _ariba, _buildAribaDb
 import os, shutil
 
 
@@ -57,6 +57,7 @@ def __main() -> None:
     
         # if an allele wasn't found, attempt to determine with ariba
         if allele == ABSENT:
+            _buildAribaDb(params)
             allele = _ariba(params)
 
         # delete files if requested
