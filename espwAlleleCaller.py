@@ -11,6 +11,7 @@ from downloadAssemblies import _runner as _downloadAssemblies
 
 
 __author__ = "Joseph S. Wirth"
+__version__ = "2.0.0"
 
 
 def _parseFile(fn:str) -> dict[str,tuple[str,str]]:
