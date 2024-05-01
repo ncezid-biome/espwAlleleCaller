@@ -1,1 +1,1 @@
-MISC_DIR = "/scicomp/home-pure/uma2/software/BIOME-scripts/misc-python-scripts/"
+MISC_DIR = "/BIOME-scripts/misc-python-scripts/"
