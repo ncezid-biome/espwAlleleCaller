@@ -340,11 +340,13 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
     CHECK_FLAGS = ("-c", "--check_env")
     SEQDIR_FLAGS = ("-s", "--seq_dir")
     THREADS_FLAGS = ("-n", "--num_threads")
+    VERSION_FLAGS = ("-v", "--version")
     SHORT_OPTS = IN_FLAGS[0][-1] + ":" + \
                  EMAIL_FLAGS[0][-1] + ":" + \
                  OUT_FLAGS[0][-1] + ":" + \
                  SEQDIR_FLAGS[0][-1] + ":" + \
                  THREADS_FLAGS[0][-1] + ":" + \
+                 VERSION_FLAGS[0][-1] + \
                  HELP_FLAGS[0][-1] + \
                  CHECK_FLAGS[0][-1]
     LONG_OPTS = (IN_FLAGS[1][2:] + "=",
@@ -353,7 +355,8 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
                  EMAIL_FLAGS[1][2:] + "=",
                  CHECK_FLAGS[1][2:],
                  SEQDIR_FLAGS[1][2:] + "=",
-                 THREADS_FLAGS[1][2:] + "=")
+                 THREADS_FLAGS[1][2:] + "=",
+                 VERSION_FLAGS[1][2:])
     
     # default values
     DEF_OUT = os.path.join(os.curdir, "espw_alleles.tsv")
@@ -383,6 +386,7 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
                    f"{GAP}{OUT_FLAGS[0] + SEP_1 + OUT_FLAGS[1]:<{WIDTH}}[file] filename to write the output{EOL}" + \
                    f"{GAP}{SEQDIR_FLAGS[0] + SEP_1 + SEQDIR_FLAGS[1]:<{WIDTH}}[directory] the directory where sequence files where be downloaded (will be created if necessary){EOL}" + \
                    f"{GAP}{THREADS_FLAGS[0] + SEP_1 + THREADS_FLAGS[1]:<{WIDTH}}[int] the number of threads to use for parallele processing{EOL}" + \
+                   f"{GAP}{VERSION_FLAGS[0] + SEP_1 + VERSION_FLAGS[1]:<{WIDTH}}print the version{EOL}" + \
                    f"{GAP}{HELP_FLAGS[0] + SEP_1 + HELP_FLAGS[1]:<{WIDTH}}print this help message{EOL}" + \
                    f"{GAP}{CHECK_FLAGS[0] + SEP_1 + CHECK_FLAGS[1]:<{WIDTH}}check that all dependencies are installed{EOL}"
         
@@ -461,6 +465,11 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
     if HELP_FLAGS[0] in sys.argv or HELP_FLAGS[1] in sys.argv or len(sys.argv) == 1:
         helpRequest = True
         printHelp()
+    
+    # print the version if requested
+    elif VERSION_FLAGS[0] in sys.argv or VERSION_FLAGS[1] in sys.argv:
+        helpRequest = True
+        print(f"v{__version__}")
     
     # check installation if requested
     elif CHECK_FLAGS[0] in sys.argv or CHECK_FLAGS[1] in sys.argv:
