@@ -20,8 +20,8 @@ RUN apt-get -y install cd-hit
 
 # install sra-toolkit
 RUN wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
-RUN tar xzf sratoolkit.tar.gz -C /sra-toolkit
-ENV PATH="${PATH}:/sra-toolkit"
+RUN tar xzf sratoolkit.tar.gz -C /sratoolkit
+ENV PATH="${PATH}:/sratoolkit"
 
 # install ariba and biopython
 RUN pip3 install Bio
