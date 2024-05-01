@@ -1,7 +1,9 @@
 # syntax=docker/dockerfile:1
 
 # Joseph S. Wirth
-# September 2023
+# May 2024
+
+ARG VERSION=2.0.0
 
 # start with ubuntu base
 FROM ubuntu:22.04
@@ -10,31 +12,31 @@ FROM ubuntu:22.04
 RUN apt-get update && \
     apt-get -y install python3.11 python3-pip python3-setuptools python3-dev
 RUN apt-get -y install ncbi-blast+
+RUN apt-get -y install git
 RUN apt-get -y install wget
 RUN apt-get -y install mummer
 RUN apt-get -y install bowtie2
 RUN apt-get -y install cd-hit
 
 # install ariba and bio python
-RUN pip3 install Bio
-RUN pip3 install ariba
+RUN pip3 install Bio=1.81
+RUN pip3 install ariba=2.12
 
-# clone repository
-RUN wget https://github.com/ncezid-biome/espwAlleleCaller/archive/refs/tags/v1.0.0.tar.gz
-RUN tar xzf v1.0.0.tar.gz
-RUN rm v1.0.0.tar.gz
-RUN mv /espwAlleleCaller-1.0.0 /espwAlleleCaller
+# install espwAlleleCaller
+RUN wget https://github.com/ncezid-biome/espwAlleleCaller/archive/refs/tags/v${VERSION}.tar.gz
+RUN tar xzf v${VERSION}.tar.gz
+RUN rm v${VERSION}.tar.gz
+RUN mv /espwAlleleCaller-${VERSION} /espwAlleleCaller
+
+# clone BIOME-scripts and copy miscDirectory.py file
+RUN git clone https://github.com/ncezid-biome/BIOME-scripts.git
+RUN echo "MISC_DIR = '/BIOME-scripts/misc-python-scripts/'" > /espwAlleleCaller/miscDirectory.py
 
 # modify the executable so that it can be invoked directly from the command line
 WORKDIR /espwAlleleCaller
-RUN echo "#!/usr/bin/python3" > espwAlleleCaller
-RUN echo "" >> espwAlleleCaller
-RUN cat espwAlleleCaller.py >> espwAlleleCaller
+RUN mv espwAlleleCaller.py espwAlleleCaller
 RUN chmod +x espwAlleleCaller
 ENV PATH="${PATH}:/espwAlleleCaller"
-
-# copy param file
-COPY ./docker_params.py /espwAlleleCaller/auxillary/params.py
 
 # make volume and set it as the workdir
 VOLUME ["/data"]
