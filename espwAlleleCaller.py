@@ -375,7 +375,7 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
         HELP_MSG = f"{EOL}Determines the espW allele in an E. coli genome{EOL}" + \
                    f"{GAP}{__author__}, 2024{EOL*2}" + \
                    f"usage:{EOL}" + \
-                   f"{GAP}jobCaller.py [-{SHORT_OPTS.replace(':', '')}]{EOL*2}" + \
+                   f"{GAP}{os.path.basename(__file__)} [-{SHORT_OPTS.replace(':', '')}]{EOL*2}" + \
                    f"required arguments:{EOL}" + \
                    f"{GAP}{IN_FLAGS[0] + SEP_1 + IN_FLAGS[1]:<{WIDTH}}[file] filename of a tab-separated file with three columns and no headers: key, ncbi accession, srr id{EOL}" + \
                    f"{GAP}{EMAIL_FLAGS[0] + SEP_1 + EMAIL_FLAGS[1]:<{WIDTH}}[str] email address (used to query NCBI){EOL*2}" + \
