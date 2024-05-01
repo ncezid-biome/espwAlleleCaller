@@ -3,10 +3,10 @@
 import getopt, glob, multiprocessing, os, shutil, subprocess, sys
 from miscDirectory import MISC_DIR
 sys.path.append(MISC_DIR)
-from auxillary.ariba import _ariba
 from auxillary.blastn import _blastn
 from auxillary.Parameters import Parameters
 from downloadSRA import _runner as _downloadSrrs
+from auxillary.ariba import _ariba, _buildAribaDb
 from downloadAssemblies import _runner as _downloadAssemblies
 
 
