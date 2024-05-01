@@ -18,8 +18,13 @@ RUN apt-get -y install mummer
 RUN apt-get -y install bowtie2
 RUN apt-get -y install cd-hit
 
-# install ariba and bio python
-RUN pip3 install Bio=1.81
+# install sra-toolkit
+RUN wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
+RUN tar xzf sratoolkit.tar.gz -C /sra-toolkit
+ENV PATH="${PATH}:/sra-toolkit"
+
+# install ariba and biopython
+RUN pip3 install Bio
 RUN pip3 install ariba=2.12
 
 # install espwAlleleCaller
