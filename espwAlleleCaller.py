@@ -422,8 +422,9 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
             vers = tuple(map(int, Bio.__version__.split('.')))
             if vers[0] < BIO_VER[0] or (vers[0] == BIO_VER[0] and vers[1] < BIO_VER[1]):
                 raise EnvironmentError(f"'Bio'{BAD_VER}{'.'.join(map(str,BIO_VER))} or above)")
-        except:
-            raise EnvironmentError(BAD_BIO)
+        except Exception as e:
+            if not isinstance(e, EnvironmentError):
+                raise EnvironmentError(BAD_BIO)
         
         # check ncbi-blast+
         try:
@@ -438,11 +439,12 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
             
             # check ariba version
             vers = tuple(map(int, result.stdout.decode().split('\n')[0][len('ARIBA version: '):].split('.')))
-            if vers[0] != ARIBA_VER[0] or (vers[0]==ARIBA_VER[0] and vers[1] != ARIBA_VER[1]):
+            if vers[0] < ARIBA_VER[0] or (vers[0]==ARIBA_VER[0] and vers[1] < ARIBA_VER[1]):
                 raise EnvironmentError(f"'ariba'{BAD_VER}{'.'.join(map(str,ARIBA_VER))})")
         
-        except:
-            raise EnvironmentError(BAD_ARIBA)
+        except Exception as e:
+            if not isinstance(e, EnvironmentError):
+                raise EnvironmentError(BAD_ARIBA)
 
         # check sratoolkit
         try:
