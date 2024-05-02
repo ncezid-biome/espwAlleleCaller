@@ -16,13 +16,32 @@ The allele of _espW_ is determined as follows:
 
 
 ## Installing `espwAlleleCaller`
-Lorem ipsum
+* install `ariba` version 2.12 or greater and add it to your path
+* install ncbi-blast+ and add it to your path
+* install sratoolkit and add it to your path
+* install biopython
+* check installation using `espwAlleleCaller.py --check_env`
 
 ## Running `espwAlleleCaller`
-Lorem ipsum
+```text
+usage:
+    espwAlleleCaller.py [-ieosnvhc]
+
+required arguments:
+    -i, --in             [file] filename of a tab-separated file with three columns and no headers: key, ncbi accession, srr id
+    -e, --email          [str] email address (used to query NCBI)
+
+optional arguments:
+    -o, --out            [file] filename to write the output
+    -s, --seq_dir        [directory] the directory where sequence files where be downloaded (will be created if necessary)
+    -n, --num_threads    [int] the number of threads to use for parallele processing
+    -v, --version        print the version
+    -h, --help           print this help message
+    -c, --check_env      check that all dependencies are installed
+```
 
 ## Software dependencies
 * [ncbi-blast+](https://blast.ncbi.nlm.nih.gov/doc/blast-help/downloadblastdata.html)
 * [ARIBA](https://github.com/sanger-pathogens/ariba)
-* [python3.11+](https://www.python.org/)
+* [python3.9+](https://www.python.org/)
 * [biopython](https://biopython.org/)
