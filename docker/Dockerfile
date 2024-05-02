@@ -6,7 +6,7 @@
 # start with ubuntu base
 FROM ubuntu:22.04
 
-ARG VERSION=2.0.0
+ARG VERSION=2.0.1
 
 # install python3, blast, wget, bowtie2, mummer, and cd-hit
 RUN apt-get update && \
