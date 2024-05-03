@@ -28,7 +28,8 @@ flowchart TB
     download_srr["download reads"]
     ariba["ariba"]
     ariba_alleles(["espW alleles"])
-    write(["write results to file"])
+    write["write results"]
+    out(["output file"])
 
     email --> download_fna
     input --> download_fna
@@ -43,6 +44,7 @@ flowchart TB
     ariba --> ariba_alleles
     blast_alleles --> write
     ariba_alleles --> write
+    write --> out
 ```
 
 ## Installation
