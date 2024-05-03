@@ -32,10 +32,12 @@ def _parseFile(fn:str) -> dict[str,tuple[str,str]]:
     # go through each line of the file
     with open(fn, 'r') as fh:
         for line in fh:
+            # parse the line
+            row = line.rstrip().split(SEP)
+            
             # skip empty lines
-            if line != '':
+            if row != []:
                 # extract the data from the line
-                row = line.rstrip().split(SEP)
                 key = row[0]
                 acn = row[1]
                 srr = row[2]
