@@ -4,7 +4,7 @@
 ##        $ conda env create -f environment.yml
 ##        $ conda activate espwallelecaller
 
-name: test
+name: espwallelecaller
 channels:
   - bioconda
   - defaults
@@ -18,4 +18,3 @@ dependencies:
   - cd-hit
   - mummer
   - bowtie2
-  
