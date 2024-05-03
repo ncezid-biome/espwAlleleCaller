@@ -30,10 +30,9 @@ def __makeBlastDb(params:Parameters) -> None:
     # constants
     CMD_A = "makeblastdb"
     CMD_B = ("-dbtype", "nucl", "-out")
-    DB_DIR = os.path.join(os.path.abspath(os.curdir), "blastdb")
     
     # get the blast db name
-    params._blastDb = os.path.join(DB_DIR, os.path.splitext(os.path.basename(params.fna))[0])
+    params._blastDb = os.path.join(params._blastDbDir, os.path.splitext(os.path.basename(params.fna))[0])
     
     # build the command
     cmd = [CMD_A]
@@ -57,7 +56,7 @@ def __runBlast(params:Parameters) -> None:
            "10000", "-outfmt", '6 qseqid sseqid length qstart qend sstart send qcovhsp pident')
     
     # determine the output file
-    params._blastFn = os.path.join(os.curdir, os.path.splitext(os.path.basename(params.fna))[0] + FN_SUFFIX)
+    params._blastFn = os.path.join(params._blastResultsDir, os.path.splitext(os.path.basename(params.fna))[0] + FN_SUFFIX)
     
     # build the blastn command
     cmd = [BLASTN]

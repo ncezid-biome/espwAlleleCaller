@@ -57,7 +57,7 @@ def __runAriba(params:Parameters) -> str:
     OUT_FN = "assembled_seqs.fa.gz"
     
     # determine the output directory
-    params._aribaDir = os.path.join(os.curdir, os.path.splitext(os.path.basename(params.reads[0]))[0][:-2])
+    params._aribaDir = os.path.join(params._aribaResultsDir, os.path.splitext(os.path.basename(params.reads[0]))[0][:-2])
   
     # build the command
     cmd = list(CMD)

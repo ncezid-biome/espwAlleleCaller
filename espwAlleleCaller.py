@@ -36,7 +36,7 @@ def _parseFile(fn:str) -> dict[str,tuple[str,str]]:
             row = line.rstrip().split(SEP)
             
             # skip empty lines
-            if row != []:
+            if row != ['']:
                 # extract the data from the line
                 key = row[0]
                 acn = row[1]
@@ -133,8 +133,15 @@ def _runAllBlasts(parsed:dict[str,tuple[str,str]], missing:set[str], seqdir:str,
         
         # add the associated fna file to the argument list if it isn't missing
         if accn not in missing:
-            fna = os.path.join(seqdir, accn + EXT)
-            args.append((key, Parameters(fna, '', '', 1, True, False)))   
+            # get the Parameters object
+            params = Parameters(os.path.join(seqdir, accn + EXT), '', '', 1, True, False)
+            
+            # create the blast directory if it doesn't already exist
+            if not os.path.isdir(params._blastResultsDir):
+                os.mkdir(params._blastResultsDir)
+            
+            # add the arguments to the list
+            args.append((key, params))
     
     # run the blasts in parallel
     pool = multiprocessing.Pool(cpus)
@@ -192,6 +199,10 @@ def _runAllAribas(srrs:dict[str,str], seqdir:str, cpus:int) -> dict[str,str]:
             _buildAribaDb(params)
             built = True
         
+        # create the ariba results directory if it does not already exist
+        if not os.path.isdir(params._aribaResultsDir):
+            os.mkdir(params._aribaResultsDir)
+        
         # add the key and parameters to the argument list
         args.append((key, params))
     
@@ -223,35 +234,20 @@ def _writeResults(results:dict[str,str], fn:str) -> None:
             fh.write(f'{key}{SEP}{allele}{EOL}')
 
 
-def _cleanup(srrs:list[str]) -> None:
+def _cleanup() -> None:
     """deletes intermediate files
-
-    Args:
-        srrs (list[str]): a list of srr ids
     """
-    # constants
-    BLAST_PATTERN = "*blastn"
-    BLAST_DB = "blastdb"
-    ARIBA_DB = "ariba_db"
-    
-    # delete each blastn file
-    for fn in glob.glob(os.path.join(os.curdir, BLAST_PATTERN)):
-        os.remove(fn)
+    # delete the directory containing the blast results
+    shutil.rmtree(os.path.join(os.curdir, Parameters._BLAST_DIR))
     
     # delete the directory containing the blast databases
-    shutil.rmtree(os.path.join(os.curdir, BLAST_DB))
+    shutil.rmtree(os.path.join(os.curdir, Parameters._BLAST_DB))
     
     # delete the directory containing the ariba database
-    shutil.rmtree(os.path.join(os.curdir, ARIBA_DB))
+    shutil.rmtree(os.path.join(os.curdir, Parameters._ARIBA_DB))
     
-    # for each srr
-    for srr in srrs:
-        # get the name of the ariba working directory
-        wd = os.path.join(os.curdir, srr)
-        
-        # remove that directory
-        if os.path.isdir(wd):
-            shutil.rmtree(wd)
+    # delete the direcotry containing the ariba results
+    shutil.rmtree(os.path.join(os.curdir, Parameters._ARIBA_DIR))
 
 
 def _runner(infn:str, email:str, seqdir:str, outfn:str, cpus:int) -> None:
@@ -311,7 +307,7 @@ def _runner(infn:str, email:str, seqdir:str, outfn:str, cpus:int) -> None:
     
     # remove intermediate files
     print('removing files ... ', end='', flush=True)
-    _cleanup(list(srrs.values()))
+    _cleanup()
     print('done')
 
 

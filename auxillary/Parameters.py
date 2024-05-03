@@ -8,11 +8,14 @@ class Parameters():
     """class for storing and accessing parameters
     """
     # global constants
-    __ESPW_FNA = "espW_alleles.fna"
-    __ARIBA_DB = "ariba_db"
-    __DEFAULT_THREADS = 1
+    _ARIBA_DB = "ariba_db"
+    _ARIBA_DIR = "ariba_results"
+    _BLAST_DB = "blast_db"
+    _BLAST_DIR = "blast_results"
     __DEFAULT_CLEANUP = True
     __DEFAULT_HELP = False
+    __DEFAULT_THREADS = 1
+    __ESPW_FNA = "espW_alleles.fna"
     
     def __init__(self, fna:str, read1:str, read2:str, threads:int, cleanup:bool, helpRequested:bool) -> Parameters:
         """constructor for the Parameters class
@@ -39,7 +42,10 @@ class Parameters():
         dataDir = os.path.join(os.path.dirname(__file__), "..", "data")
         
         # import values from the params file
-        self._aribaDb:str = os.path.join(os.curdir, Parameters.__ARIBA_DB)
+        self._aribaDb:str = os.path.join(os.curdir, Parameters._ARIBA_DB)
+        self._aribaResultsDir:str = os.path.join(os.curdir, Parameters._ARIBA_DIR)
+        self._blastResultsDir:str = os.path.join(os.curdir, Parameters._BLAST_DIR)
+        self._blastDbDir:str = os.path.join(os.curdir, Parameters._BLAST_DB)
         self._espwFna:str = os.path.join(dataDir, Parameters.__ESPW_FNA)
         
         # initialize a few other variables
