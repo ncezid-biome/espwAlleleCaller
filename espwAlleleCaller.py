@@ -373,22 +373,22 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
     def printHelp():
         GAP = " "*4
         EOL = "\n"
-        SEP_1 = ", "
+        SEP = ", "
         WIDTH = 21
         HELP_MSG = f"{EOL}Determines the espW allele in an E. coli genome{EOL}" + \
                    f"{GAP}{__author__}, 2024{EOL*2}" + \
                    f"usage:{EOL}" + \
                    f"{GAP}{os.path.basename(__file__)} [-{SHORT_OPTS.replace(':', '')}]{EOL*2}" + \
                    f"required arguments:{EOL}" + \
-                   f"{GAP}{IN_FLAGS[0] + SEP_1 + IN_FLAGS[1]:<{WIDTH}}[file] filename of a tab-separated file with three columns and no headers: key, ncbi accession, srr id{EOL}" + \
-                   f"{GAP}{EMAIL_FLAGS[0] + SEP_1 + EMAIL_FLAGS[1]:<{WIDTH}}[str] email address (used to query NCBI){EOL*2}" + \
+                   f"{GAP}{IN_FLAGS[0] + SEP + IN_FLAGS[1]:<{WIDTH}}[file] filename of a tab-separated file with three columns and no headers: key, ncbi accession, srr id{EOL}" + \
+                   f"{GAP}{EMAIL_FLAGS[0] + SEP + EMAIL_FLAGS[1]:<{WIDTH}}[str] email address (used to query NCBI){EOL*2}" + \
                    f"optional arguments:{EOL}" + \
-                   f"{GAP}{OUT_FLAGS[0] + SEP_1 + OUT_FLAGS[1]:<{WIDTH}}[file] filename to write the output{EOL}" + \
-                   f"{GAP}{SEQDIR_FLAGS[0] + SEP_1 + SEQDIR_FLAGS[1]:<{WIDTH}}[directory] the directory where sequence files where be downloaded (will be created if necessary){EOL}" + \
-                   f"{GAP}{THREADS_FLAGS[0] + SEP_1 + THREADS_FLAGS[1]:<{WIDTH}}[int] the number of threads to use for parallele processing{EOL}" + \
-                   f"{GAP}{VERSION_FLAGS[0] + SEP_1 + VERSION_FLAGS[1]:<{WIDTH}}print the version{EOL}" + \
-                   f"{GAP}{HELP_FLAGS[0] + SEP_1 + HELP_FLAGS[1]:<{WIDTH}}print this help message{EOL}" + \
-                   f"{GAP}{CHECK_FLAGS[0] + SEP_1 + CHECK_FLAGS[1]:<{WIDTH}}check that all dependencies are installed{EOL}"
+                   f"{GAP}{OUT_FLAGS[0] + SEP + OUT_FLAGS[1]:<{WIDTH}}[file] filename to write the output{EOL}" + \
+                   f"{GAP}{SEQDIR_FLAGS[0] + SEP + SEQDIR_FLAGS[1]:<{WIDTH}}[directory] the directory where sequence files where be downloaded (will be created if necessary){EOL}" + \
+                   f"{GAP}{THREADS_FLAGS[0] + SEP + THREADS_FLAGS[1]:<{WIDTH}}[int] the number of threads to use for parallel processing{EOL}" + \
+                   f"{GAP}{VERSION_FLAGS[0] + SEP + VERSION_FLAGS[1]:<{WIDTH}}print the version{EOL}" + \
+                   f"{GAP}{HELP_FLAGS[0] + SEP + HELP_FLAGS[1]:<{WIDTH}}print this help message{EOL}" + \
+                   f"{GAP}{CHECK_FLAGS[0] + SEP + CHECK_FLAGS[1]:<{WIDTH}}check that all dependencies are installed{EOL}"
         
         print(HELP_MSG)
     
