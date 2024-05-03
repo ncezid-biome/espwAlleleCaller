@@ -45,9 +45,7 @@ RUN git clone https://github.com/ncezid-biome/BIOME-scripts.git
 RUN echo "MISC_DIR = '/BIOME-scripts/misc-python-scripts/'" > /espwAlleleCaller/miscDirectory.py
 
 # make the program executable
-WORKDIR /espwAlleleCaller
-RUN mv espwAlleleCaller.py espwAlleleCaller
-RUN chmod +x espwAlleleCaller
+RUN chmod +x /espwAlleleCaller/espwAlleleCaller.py
 
 # add everything to the path
 RUN mv $(ls -d /sratoolkit*/) /sratoolkit/
