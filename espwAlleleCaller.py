@@ -344,8 +344,8 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
                  OUT_FLAGS[0][-1] + ":" + \
                  SEQDIR_FLAGS[0][-1] + ":" + \
                  THREADS_FLAGS[0][-1] + ":" + \
-                 VERSION_FLAGS[0][-1] + \
                  HELP_FLAGS[0][-1] + \
+                 VERSION_FLAGS[0][-1] + \
                  CHECK_FLAGS[0][-1]
     LONG_OPTS = (IN_FLAGS[1][2:] + "=",
                  OUT_FLAGS[1][2:] + "=",
@@ -373,6 +373,7 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
         EOL = "\n"
         SEP = ", "
         WIDTH = 21
+        DEFAULT = " (default: "
         HELP_MSG = f"{EOL}Determines the espW allele in an E. coli genome{EOL}" + \
                    f"{GAP}{__author__}, 2024{EOL*2}" + \
                    f"usage:{EOL}" + \
@@ -381,11 +382,12 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
                    f"{GAP}{IN_FLAGS[0] + SEP + IN_FLAGS[1]:<{WIDTH}}[file] filename of a tab-separated file with three columns and no headers: key, ncbi accession, srr id{EOL}" + \
                    f"{GAP}{EMAIL_FLAGS[0] + SEP + EMAIL_FLAGS[1]:<{WIDTH}}[str] email address (used to query NCBI){EOL*2}" + \
                    f"optional arguments:{EOL}" + \
-                   f"{GAP}{OUT_FLAGS[0] + SEP + OUT_FLAGS[1]:<{WIDTH}}[file] filename to write the output{EOL}" + \
-                   f"{GAP}{SEQDIR_FLAGS[0] + SEP + SEQDIR_FLAGS[1]:<{WIDTH}}[directory] the directory where sequence files where be downloaded (will be created if necessary){EOL}" + \
-                   f"{GAP}{THREADS_FLAGS[0] + SEP + THREADS_FLAGS[1]:<{WIDTH}}[int] the number of threads to use for parallel processing{EOL}" + \
-                   f"{GAP}{VERSION_FLAGS[0] + SEP + VERSION_FLAGS[1]:<{WIDTH}}print the version{EOL}" + \
+                   f"{GAP}{OUT_FLAGS[0] + SEP + OUT_FLAGS[1]:<{WIDTH}}[file] filename to write the output{DEFAULT}'{DEF_OUT}'){EOL}" + \
+                   f"{GAP}{SEQDIR_FLAGS[0] + SEP + SEQDIR_FLAGS[1]:<{WIDTH}}[directory] the directory where sequence files will be downloaded {DEFAULT}'{DEF_SEQDIR}'){EOL}" + \
+                   f"{GAP}{THREADS_FLAGS[0] + SEP + THREADS_FLAGS[1]:<{WIDTH}}[int] the number of threads to use for parallel processing{DEFAULT}{DEF_THREADS}){EOL*2}" + \
+                   f"troubleshooting:{EOL}" + \
                    f"{GAP}{HELP_FLAGS[0] + SEP + HELP_FLAGS[1]:<{WIDTH}}print this help message{EOL}" + \
+                   f"{GAP}{VERSION_FLAGS[0] + SEP + VERSION_FLAGS[1]:<{WIDTH}}print the version{EOL}" + \
                    f"{GAP}{CHECK_FLAGS[0] + SEP + CHECK_FLAGS[1]:<{WIDTH}}check that all dependencies are installed{EOL}"
         
         print(HELP_MSG)
