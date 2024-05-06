@@ -234,8 +234,12 @@ def _writeResults(results:dict[str,str], fn:str) -> None:
             fh.write(f'{key}{SEP}{allele}{EOL}')
 
 
-def _cleanup() -> None:
+def _cleanup(delete:bool, seqdir:str) -> None:
     """deletes intermediate files
+
+    Args:
+        delete (bool): indicates if the sequence directory should be deleted
+        seqdir (str): the sequence directory
     """
     # delete the directory containing the blast results
     shutil.rmtree(os.path.join(os.curdir, Parameters._BLAST_DIR))
@@ -248,9 +252,13 @@ def _cleanup() -> None:
     
     # delete the direcotry containing the ariba results
     shutil.rmtree(os.path.join(os.curdir, Parameters._ARIBA_DIR))
+    
+    # delete the sequence files if requested
+    if delete:
+        shutil.rmtree(seqdir)
 
 
-def _runner(infn:str, email:str, seqdir:str, outfn:str, cpus:int) -> None:
+def _runner(infn:str, email:str, seqdir:str, outfn:str, cpus:int, delete:bool) -> None:
     """main runner function
 
     Args:
@@ -259,6 +267,7 @@ def _runner(infn:str, email:str, seqdir:str, outfn:str, cpus:int) -> None:
         seqdir (str): directory to save sequence files to
         outfn (str): output filename
         cpus (int): number of cpus for parallel processing
+        delete (bool): indicates if sequence files should be deleted
     """
     # constants
     FORMAT = "fasta"
@@ -307,11 +316,11 @@ def _runner(infn:str, email:str, seqdir:str, outfn:str, cpus:int) -> None:
     
     # remove intermediate files
     print('removing files ... ', end='', flush=True)
-    _cleanup()
+    _cleanup(delete, seqdir)
     print('done')
 
 
-def _parseArgs() -> tuple[str,str,str,str,int,bool]:
+def _parseArgs() -> tuple[str,str,str,str,int,bool,bool]:
     """parses command line arguments
 
     Raises:
@@ -328,7 +337,7 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
         BaseException: missing required arguments
 
     Returns:
-        tuple[str,str,str,str,int,bool]: input filename, email, output filename, sequence directory, number threads, help requested
+        tuple[str,str,str,str,int,bool]: input filename, email, output filename, sequence directory, number threads, delete seqs, help requested
     """
     # flags
     IN_FLAGS = ("-i", "--in")
@@ -337,6 +346,7 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
     EMAIL_FLAGS = ("-e", "--email")
     CHECK_FLAGS = ("-c", "--check_env")
     SEQDIR_FLAGS = ("-s", "--seq_dir")
+    DELETE_FLAGS = ("-d", "--delete")
     THREADS_FLAGS = ("-n", "--num_threads")
     VERSION_FLAGS = ("-v", "--version")
     SHORT_OPTS = IN_FLAGS[0][-1] + ":" + \
@@ -344,6 +354,7 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
                  OUT_FLAGS[0][-1] + ":" + \
                  SEQDIR_FLAGS[0][-1] + ":" + \
                  THREADS_FLAGS[0][-1] + ":" + \
+                 DELETE_FLAGS[0][-1] + \
                  HELP_FLAGS[0][-1] + \
                  VERSION_FLAGS[0][-1] + \
                  CHECK_FLAGS[0][-1]
@@ -352,6 +363,7 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
                  HELP_FLAGS[1][2:],
                  EMAIL_FLAGS[1][2:] + "=",
                  CHECK_FLAGS[1][2:],
+                 DELETE_FLAGS[1][2:],
                  SEQDIR_FLAGS[1][2:] + "=",
                  THREADS_FLAGS[1][2:] + "=",
                  VERSION_FLAGS[1][2:])
@@ -361,6 +373,7 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
     DEF_THREADS = 1
     DEF_HELP = False
     DEF_SEQDIR = os.path.join(os.curdir, "seqs")
+    DEF_DELETE = False
     
     # messages
     ERR_MSG_1 = "input file does not exist"
@@ -384,7 +397,8 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
                    f"optional arguments:{EOL}" + \
                    f"{GAP}{OUT_FLAGS[0] + SEP + OUT_FLAGS[1]:<{WIDTH}}[file] filename to write the output{DEFAULT}'{DEF_OUT}'){EOL}" + \
                    f"{GAP}{SEQDIR_FLAGS[0] + SEP + SEQDIR_FLAGS[1]:<{WIDTH}}[directory] the directory where sequence files will be downloaded {DEFAULT}'{DEF_SEQDIR}'){EOL}" + \
-                   f"{GAP}{THREADS_FLAGS[0] + SEP + THREADS_FLAGS[1]:<{WIDTH}}[int] the number of threads to use for parallel processing{DEFAULT}{DEF_THREADS}){EOL*2}" + \
+                   f"{GAP}{THREADS_FLAGS[0] + SEP + THREADS_FLAGS[1]:<{WIDTH}}[int] the number of threads to use for parallel processing{DEFAULT}{DEF_THREADS}){EOL}" + \
+                   f"{GAP}{DELETE_FLAGS[0] + SEP + DELETE_FLAGS[1]:<{WIDTH}}delete sequence files after finishing{DEFAULT}{DEF_DELETE}){EOL*2}" + \
                    f"troubleshooting:{EOL}" + \
                    f"{GAP}{HELP_FLAGS[0] + SEP + HELP_FLAGS[1]:<{WIDTH}}print this help message{EOL}" + \
                    f"{GAP}{VERSION_FLAGS[0] + SEP + VERSION_FLAGS[1]:<{WIDTH}}print the version{EOL}" + \
@@ -461,6 +475,7 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
     outfn = DEF_OUT
     seqdir = DEF_SEQDIR
     cpus = DEF_THREADS
+    delete = DEF_DELETE
     helpRequest = DEF_HELP
     
     # give help if requested
@@ -511,23 +526,27 @@ def _parseArgs() -> tuple[str,str,str,str,int,bool]:
                     cpus = int(arg)
                 except ValueError:
                     raise ValueError(ERR_MSG_3)
+            
+            # determine if sequence files should be deleted
+            elif opt in DELETE_FLAGS:
+                delete = True                
     
         # make sure all required arguments were specified
         if None in (infn, email):
             raise BaseException(ERR_MSG_4)
         
-    return infn, email, outfn, seqdir, cpus, helpRequest
+    return infn, email, outfn, seqdir, cpus, delete, helpRequest
 
 
 def _main():
     """entry point to the program
     """
     # parse command line arguments
-    infn, email, outfn, seqdir, cpus, helpRequest = _parseArgs()
+    infn, email, outfn, seqdir, cpus, delete, helpRequest = _parseArgs()
     
     # only run the program if help was not requested
     if not helpRequest:
-        _runner(infn, email, seqdir, outfn, cpus)
+        _runner(infn, email, seqdir, outfn, cpus, delete)
 
 
 if __name__ == "__main__":
