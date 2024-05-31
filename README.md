@@ -49,7 +49,6 @@ flowchart TB
 
 ## Installation
 ### Installing `espwAlleleCaller` using a `conda` environment
-* install `sratoolkit` as described [here](https://github.com/ncbi/sra-tools/wiki/01.-Downloading-SRA-Toolkit) (we used version 2.11.3)
 * download the two required git repositories
 ```bash
 git clone https://github.com/ncezid-biome/BIOME-scripts.git
