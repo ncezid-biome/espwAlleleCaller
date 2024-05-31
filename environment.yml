@@ -15,6 +15,7 @@ dependencies:
   - pysam<=0.18.0
   - ariba>=2.12
   - blast>=2.15
+  - sra-tools
   - cd-hit
   - mummer
   - bowtie2
