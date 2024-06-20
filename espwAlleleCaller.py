@@ -248,10 +248,20 @@ def _cleanup(delete:bool, seqdir:str) -> None:
     shutil.rmtree(os.path.join(os.curdir, Parameters._BLAST_DB))
     
     # delete the directory containing the ariba database
-    shutil.rmtree(os.path.join(os.curdir, Parameters._ARIBA_DB))
+    try:
+        shutil.rmtree(os.path.join(os.curdir, Parameters._ARIBA_DB))
     
-    # delete the direcotry containing the ariba results
-    shutil.rmtree(os.path.join(os.curdir, Parameters._ARIBA_DIR))
+    # its possible ariba was not run
+    except FileNotFoundError:
+        pass
+    
+    # delete the directory containing the ariba results
+    try:
+        shutil.rmtree(os.path.join(os.curdir, Parameters._ARIBA_DIR))
+    
+    # its possible ariba was not run
+    except FileNotFoundError:
+        pass
     
     # delete the sequence files if requested
     if delete:
